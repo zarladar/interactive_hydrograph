@@ -206,6 +206,8 @@ class MainWindow(QtWidgets.QDialog):
         self.array_cache = dict()
 
         self.setWindowTitle('Interactive Hydrograph Viewer')
+        self.setWindowIcon(QtGui.QIcon('..\icon.png'))
+
         self.canvas = MatplotlibFigure()
         self.source = DataEntry(all_requirements=all_requirements)
         self.source.plot_button.disconnect()
