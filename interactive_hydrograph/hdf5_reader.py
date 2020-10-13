@@ -1,3 +1,5 @@
+import re
+
 import h5py
 import numpy as np
 
@@ -21,22 +23,58 @@ def get_series(array, row, col):
     return x, y
 
 
+def iwfm_get_array(file, elements):
+    # detect details from text file
+    detect_iwfm_details(file)
+
+    # Create temp file with layer details added
+    with open(file, 'r') as FILE, open(r'.\temp.hed', 'w') as TEMP:
+        pass
+
+
+def detect_iwfm_details(file, **kwargs):
+    print('Here')
+    layers = 0
+    nodes = 0
+    time_format = None
+    with open(file, 'r') as FILE:
+        for line in FILE:
+            if 'TIME' in line:
+                line = re.split('\s+', line.replace('*', ''))
+                print(line)
+                exit()
+
+
 def get_array(file: str, model: str, **kwargs):
     readers = {
         'MODFLOW': get_4d_array,
+        'IWFM': iwfm_get_array
     }
     mapping = {
         'MODFLOW': {
             'Model Rows': 'rows',
             'Model Columns': 'cols',
             'Model Layers': 'lays'
+        },
+        'IWFM': {
+            'Model Elements': 'elements',
+            'Model Layers': 'lays',
         }
     }
     if model not in readers:
         raise NotImplementedError(f"Model type {model} not supported yet.")
-
+    print(kwargs)
     kwargs = {mapping[model][key]: value for key, value in kwargs.items()}
-    return readers[model](file=file, **kwargs)
+    print(kwargs)
+
+    reader = readers[model]
+    print(reader)
+
+    result = reader(file=file, **kwargs)
+    print(result)
+
+    return result
+
 
 
 def array_to_series(array, model, **kwargs):

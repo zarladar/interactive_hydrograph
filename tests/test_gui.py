@@ -14,8 +14,8 @@ def ask_success():
 class TestsGUI(unittest.TestCase):
     def test_radio_buttons(self):
         app = QtWidgets.QApplication([])
-        window = gui._ModelRadioWidget(
-            model_options=['MODFLOW', 'IWFM']
+        window = gui._RadioWidget(
+            radio_options=['MODFLOW', 'IWFM']
         )
         window.show()
         app.exec_()
@@ -23,8 +23,8 @@ class TestsGUI(unittest.TestCase):
 
     def test_model_requirement_entry(self):
         app = QtWidgets.QApplication([])
-        window = gui._MultipleModelRequirementEntries(
-            model_requirements={
+        window = gui._StackedNamedEntries(
+            required_entries={
                 'MODFLOW': ['Rows', 'Columns', 'Layers'],
                 'IWFM': ['Elements', 'Layers']
             }
@@ -35,8 +35,8 @@ class TestsGUI(unittest.TestCase):
 
     def test_model_type_selection(self):
         app = QtWidgets.QApplication([])
-        window = gui.ModelTypeSelection(
-            model_requirements={
+        window = gui.RadioControlledEntry(
+            required_entries={
                 'MODFLOW': ['Rows', 'Columns', 'Layers'],
                 'IWFM': ['Elements', 'Layers']
             }
@@ -45,6 +45,14 @@ class TestsGUI(unittest.TestCase):
         app.exec_()
         self.assertEqual(ask_success(), 'y')
 
+    def test_new_gui(self):
+        app = QtWidgets.QApplication([])
+        window = gui.UserInputWindow(
+            req=None,
+            dat=None
+        )
+        window.show()
+        app.exec_()
 
 if __name__ == '__main__':
     unittest.main()
