@@ -14,7 +14,7 @@ def ask_success():
 class TestsGUI(unittest.TestCase):
     def test_radio_buttons(self):
         app = QtWidgets.QApplication([])
-        window = gui._RadioWidget(
+        window = gui._RadioButtons(
             radio_options=['MODFLOW', 'IWFM']
         )
         window.show()
